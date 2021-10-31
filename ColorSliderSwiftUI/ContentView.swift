@@ -18,39 +18,35 @@ struct ContentView: View {
             Color(red: 30 / 255, green: 90 / 255, blue: 190 / 255)
                 .ignoresSafeArea()
             
-            VStack(spacing: 40) {
+            VStack(spacing: 20) {
                 ColorView(
                     redColorValue: redSliderValue,
                     greenColorValue: greenSliderValue,
                     blueColorValue: blueSliderValue
                 )
                 
-                VStack {
-                    SliderView(value: $redSliderValue, color: .red)
-                    SliderView(value: $greenSliderValue, color: .green)
-                    SliderView(value: $blueSliderValue, color: .blue)
-                }
-                .toolbar {
-                    ToolbarItemGroup(placement: .keyboard) {
-                        Spacer()
-                        Button("Done") {
-                            checkMaxValue()
-                            hideKeyboard()
-                        }
-                    }
-                }
+                SliderView(value: $redSliderValue, color: .red)
+                SliderView(value: $greenSliderValue, color: .green)
+                SliderView(value: $blueSliderValue, color: .blue)
                 
                 Spacer()
-                
             }
             .padding()
+            .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button("Done") {
+                        checkMaxValue()
+                        hideKeyboard()
+                    }
+                }
+            }
+            .onTapGesture {
+                checkMaxValue()
+                hideKeyboard()
+            }
             
         }
-        .onTapGesture {
-            checkMaxValue()
-            hideKeyboard()
-        }
-        
     }
     
     private func hideKeyboard() {

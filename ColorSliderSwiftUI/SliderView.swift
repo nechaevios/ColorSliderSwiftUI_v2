@@ -17,6 +17,7 @@ struct SliderView: View {
             Text("\(lround(value))").foregroundColor(.white)
                 .multilineTextAlignment(.leading)
                 .frame(width: 40)
+                .lineLimit(1)
                 
             Slider(value: $value, in: 0...255, step: 1)
                 .accentColor(color)
