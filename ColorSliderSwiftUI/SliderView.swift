@@ -12,18 +12,20 @@ struct SliderView: View {
     
     let color: Color
     
-    let formatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .none
-        return formatter
-    }()
-    
     var body: some View {
         HStack {
             Text("\(lround(value))").foregroundColor(.white)
+                .multilineTextAlignment(.leading)
+                .frame(width: 40)
+                
             Slider(value: $value, in: 0...255, step: 1)
                 .accentColor(color)
-            TextField("", value: $value, formatter: formatter)
+            
+            TextField("number", text: Binding(
+                get: { String(format: "%.0f", value) },
+                set: { value = Double($0) ?? 0 }
+            ))
+                .multilineTextAlignment(.trailing)
                 .frame(width: 40)
                 .padding(4)
                 .background(.white)
