@@ -8,63 +8,41 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var red = Double.random(in: 0...255)
+    @State private var green = Double.random(in: 0...255)
+    @State private var blue = Double.random(in: 0...255)
     
-    @State private var redSliderValue = Double.random(in: 0...255)
-    @State private var greenSliderValue = Double.random(in: 0...255)
-    @State private var blueSliderValue = Double.random(in: 0...255)
+    @FocusState private var isInputActive: Bool
     
     var body: some View {
-        ZStack {
-            Color(red: 30 / 255, green: 90 / 255, blue: 190 / 255)
-                .ignoresSafeArea()
-            
-            VStack(spacing: 20) {
-                ColorView(
-                    redColorValue: redSliderValue,
-                    greenColorValue: greenSliderValue,
-                    blueColorValue: blueSliderValue
-                )
+        NavigationView {
+            ZStack {
+                Color(#colorLiteral(red: 0, green: 0.3765624762, blue: 0.7304599881, alpha: 1)).ignoresSafeArea()
                 
-                SliderView(value: $redSliderValue, color: .red)
-                SliderView(value: $greenSliderValue, color: .green)
-                SliderView(value: $blueSliderValue, color: .blue)
-                
-                Spacer()
-            }
-            .padding()
-            .toolbar {
-                ToolbarItemGroup(placement: .keyboard) {
-                    Spacer()
-                    Button("Done") {
-                        checkMaxValue()
-                        hideKeyboard()
+                VStack(spacing: 40) {
+                    ColorView(red: red, green: green, blue: blue)
+                    
+                    VStack {
+                        ColorSliderView(sliderValue: $red, color: .red)
+                        ColorSliderView(sliderValue: $green, color: .green)
+                        ColorSliderView(sliderValue: $blue, color: .blue)
                     }
+                    .frame(height: 150)
+                    .focused($isInputActive)
+                    .toolbar {
+                        ToolbarItemGroup(placement: .keyboard) {
+                            Spacer()
+                            Button("Done") {
+                                isInputActive = false
+                            }
+                        }
+                    }
+                    Spacer()
                 }
+                .padding()
             }
-            .onTapGesture {
-                checkMaxValue()
-                hideKeyboard()
-            }
-            
         }
     }
-    
-    private func hideKeyboard() {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-    }
-    
-    private func checkMaxValue() {
-        let max = 255.0
-        
-        if redSliderValue > max {
-            redSliderValue = max
-        } else if greenSliderValue > max {
-            greenSliderValue = max
-        } else if blueSliderValue > max {
-            blueSliderValue = max
-        }
-    }
-    
 }
 
 struct ContentView_Previews: PreviewProvider {
